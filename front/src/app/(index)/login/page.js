@@ -3,23 +3,48 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 
 
 export default function Login() {
-
+  let entrar = false
+  const [usuarios, setUsuarios] = useState([])
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter()
   
+  useEffect(() => {
+    fetch("http://localhost:4006/usuarios")
+      .then(response => response.json())
+      .then(result => {
+        setUsuarios(result) 
+      })
+  }, [])
 
-  function SignUp() {
-    console.log(user)
-    console.log(password)
-  }
+
+
+  useEffect(() => {
+    console.log(usuarios)
+  }, [usuarios])
 
   function SignIn() {
+      for (let i=0; i < usuarios.length; i++) {
+      if (usuarios[i].usuario == user) {
+        if (usuarios[i].contraseña == password) {
+          entrar = true
+          console.log("entramos")
+          // router.push("./chat")
+        } 
+      }
+
+    } 
+    if (entrar == false) {
+      console.log("Usuario o Contraseña Incorrectos")
+    }
+  }
+
+  function SignUp() {
   }
 
   function savePassword(event) {
@@ -27,6 +52,7 @@ export default function Login() {
   }
   
   function saveUser(event) {
+    console.log(user)
     setUser(event.target.value)
   }
 
