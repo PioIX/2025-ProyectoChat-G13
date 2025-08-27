@@ -9,7 +9,7 @@ import { use, useEffect, useState } from "react";
 
 export default function Login() {
   let entrar = false
-  const [usuarios, setUsuarios] = useState([])
+  const [usuarios, setUsuarios] = useState([  ])
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter()
@@ -30,11 +30,11 @@ export default function Login() {
 
   function SignIn() {
       for (let i=0; i < usuarios.length; i++) {
-      if (usuarios[i].usuario == user) {
-        if (usuarios[i].contraseña == password) {
-          entrar = true
-          console.log("entramos")
-          // router.push("./chat")
+        if (usuarios[i].mail == user) {
+          if (usuarios[i].contraseña == password) {
+            entrar = true
+            console.log("entramos")
+            router.push("./../chat")
         } 
       }
 
@@ -52,8 +52,15 @@ export default function Login() {
   }
   
   function saveUser(event) {
-    console.log(user)
     setUser(event.target.value)
+
+  }
+
+  function ver() {
+    console.log(user)
+    console.log(password)
+    console.log(usuarios)
+    console.log(usuarios.length)
   }
 
   return (
@@ -61,10 +68,12 @@ export default function Login() {
         <h1>Este va a ser el Login</h1>
         <div className="contenedor-login">
           <div className="inputs-login">
-            <Input placeholder="Escriba su email" id="email" className="inputs-login" type="text" onChange={saveUser}/>
+            <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser}/>
             <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword}/>
             <Button text="Sign In" onClick={SignIn}></Button>
             <Button text="Sign Up" onClick={SignUp}></Button>
+            <Button text="LOOK" onClick={ver}></Button>
+            
           </div>
         </div>
     </>
