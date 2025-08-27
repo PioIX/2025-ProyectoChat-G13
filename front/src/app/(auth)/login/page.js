@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
@@ -9,7 +10,7 @@ import { use, useEffect, useState } from "react";
 
 export default function Login() {
   let entrar = false
-  const [usuarios, setUsuarios] = useState([  ])
+  const [usuarios, setUsuarios] = useState([])
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter()
@@ -56,24 +57,16 @@ export default function Login() {
 
   }
 
-  function ver() {
-    console.log(user)
-    console.log(password)
-    console.log(usuarios)
-    console.log(usuarios.length)
-  }
-
   return (
     <>
         <h1>Este va a ser el Login</h1>
         <div className="contenedor-login">
           <div className="inputs-login">
-            <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser}/>
-            <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword}/>
+            <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser} name="mail" text="Correo electrónico"/>
+            <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword} name="contraseña" text="Contraseña"/>
             <Button text="Sign In" onClick={SignIn}></Button>
-            <Button text="Sign Up" onClick={SignUp}></Button>
-            <Button text="LOOK" onClick={ver}></Button>
-            
+            <h3>¿Es la primera vez que ingresas? ¡Registrate!</h3>
+            <Link href="./register">Registrarse</Link>
           </div>
         </div>
     </>
