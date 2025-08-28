@@ -2,7 +2,8 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Register() {
 
@@ -12,6 +13,16 @@ export default function Register() {
     const [confirmContraseña, setConfirmContraseña] = useState("")
     const [description, SetDescription] = useState("")
     const [correo, SetCorreo] = useState("")
+
+    const [usuario, setUsuario] = useState([])
+
+    const router = useRouter()
+    
+    useEffect(() => {
+        if (usuario.existe == false) {
+            SignUp()
+        }
+    }, [usuario])
 
     function saveName(event) {
         SetNombre(event.target.value)
@@ -32,11 +43,7 @@ export default function Register() {
         SetCorreo(event.target.value)
     }
 
-    function look() {
-        console.log(nombre, apellido, confirmContraseña, contraseña, correo, description)
-    }
-
-    function UserExists(correo) {
+    function UserExists() {
             fetch("http://localhost:4006/findUser", {
                 method: "POST",
                 headers: {
@@ -48,44 +55,35 @@ export default function Register() {
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result);
-                console.log(result.length)
-                return result.length > 0
+                setUsuario(result)
             })
-        }   
+    }
 
-    async function SignUp() {
+    function SignUp() {
         if (contraseña === confirmContraseña) {
-            let existe = UserExists(correo)
-            if (existe == true) {
-                console.log("usuario existe")
-            } else {
-                console.log("Usuario no existe")
-                //     fetch("http://localhost:4006/register", {
-                //         method: "POST",
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         },
-                //         body: JSON.stringify({
-                //             nombre: nombre,
-                //             apellido: apellido,
-                //             mail: correo,
-                //             contraseña: contraseña,
-                //             desc_personal: description,
-                //             foto_perfil: null,
-                //             en_linea: false
-                //         })
-                //     })
-                // .then(response => response.json())
-                // .then(result => {
-                //     console.log("Usuario creado");
-                // })
-                }
-            }
+            fetch("http://localhost:4006/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    apellido: apellido,
+                    mail: correo,
+                    contraseña: contraseña,
+                    desc_personal: description,
+                    foto_perfil: null,
+                    en_linea: false
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log("Usuario creado");
+                router.replace("./../chat")
+        })
+        }
+    }
             
-            
-        } 
-
     return (
         <div>
             <h1>Registro</h1>
@@ -99,8 +97,7 @@ export default function Register() {
             <Input text="Descripcion Personal" placeholder="Escriba la Descripcion Personal" className="register-inputs" type="text" onChange={saveDescription} required={true}/>
             <Input text="Correo Electronico" placeholder="Escriba su email" className="register-inputs" type="email" onChange={saveMail} required={true}/>
 
-            <Button onClick={SignUp} text="Sign Up"></Button>
-            <Button onClick={look} text="LOOK"></Button>
+            <Button onClick={UserExists} text="Sign Up"></Button>
         </div>
     ) 
 }

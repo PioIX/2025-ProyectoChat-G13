@@ -25,18 +25,13 @@ export default function Login() {
   }, [])
 
 
-
-  useEffect(() => {
-    console.log(usuarios)
-  }, [usuarios])
-
   function SignIn() {
       for (let i=0; i < usuarios.length; i++) {
         if (usuarios[i].mail == user) {
           if (usuarios[i].contraseña == password) {
             entrar = true
             console.log("entramos")
-            router.push("./../chat")
+            router.replace("./../chat")
         } 
       }
 
@@ -46,29 +41,23 @@ export default function Login() {
     }
   }
 
-  function SignUp() {
-  }
-
   function savePassword(event) {
     setPassword(event.target.value)
   }
   
   function saveUser(event) {
     setUser(event.target.value)
-
   }
 
   return (
     <>
         <h1>Este va a ser el Login</h1>
         <div className="contenedor-login">
-          <div className="inputs-login">
             <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser} name="mail" text="Correo electrónico"/>
             <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword} name="contraseña" text="Contraseña"/>
             <Button text="Sign In" onClick={SignIn}></Button>
             <h3>¿Es la primera vez que ingresas? ¡Registrate!</h3>
             <Link href="./register">Registrarse</Link>
-          </div>
         </div>
     </>
   );
