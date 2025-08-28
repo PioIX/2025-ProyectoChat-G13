@@ -3,6 +3,6 @@
 
 export default function Home() {
   return (
-    <p></p>
+    <p>Putri pedazo de puto</p>
   );
 }

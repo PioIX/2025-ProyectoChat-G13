@@ -756,7 +756,10 @@ app.post('/findUser', async function(req,res) {
         const respuesta = await realizarQuery(`
             SELECT * FROM UsuariosChat WHERE mail = '${req.body.mail}'
         `)
-        res.send(respuesta)
+        if (respuesta.length > 0)
+            res.send({vector: respuesta, existe: true})
+        else
+            res.send({vector: respuesta, existe: false})
     } catch (error) {
         console.log(error)
     }
