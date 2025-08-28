@@ -738,3 +738,26 @@ app.get('/usuarios', async function(req,res) {
         console.log(error)
     }
 })
+
+app.post('/register', async function(req,res) {
+    try {
+        const respuesta = await realizarQuery(`
+            INSERT INTO UsuariosChat (nombre, apellido, mail, contraseña, desc_personal, foto_perfil, en_linea)    
+            VALUES ('${req.body.nombre}', '${req.body.apellido}', '${req.body.mail}', '${req.body.contraseña}', '${req.body.desc_personal}', ${req.body.foto_perfil}, ${req.body.en_linea})
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/findUser', async function(req,res) {
+    try {
+        const respuesta = await realizarQuery(`
+            SELECT * FROM UsuariosChat WHERE mail = '${req.body.mail}'
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+    }
+})

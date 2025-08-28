@@ -19,6 +19,7 @@ export default function Login() {
     fetch("http://localhost:4006/usuarios")
       .then(response => response.json())
       .then(result => {
+        console.log(result)
         setUsuarios(result) 
       })
   }, [])
