@@ -1,5 +1,9 @@
+"use client"
+
 export default function Chat() {
     return (
-        <div>hola como estas</div>
+        <div className="screen-device">
+            
+        </div>
     )
 }
