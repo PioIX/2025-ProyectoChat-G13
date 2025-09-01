@@ -1,5 +1,6 @@
 "use client"
 
+import "./login.styles.css";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Link from "next/link";
@@ -51,7 +52,7 @@ export default function Login() {
 
   return (
     <>
-        <h1>Este va a ser el Login</h1>
+        <h1>Login</h1>
         <div className="contenedor-login">
             <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser} name="mail" text="Correo electrónico"/>
             <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword} name="contraseña" text="Contraseña"/>

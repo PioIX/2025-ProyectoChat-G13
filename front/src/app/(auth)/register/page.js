@@ -1,5 +1,6 @@
 "use client"
 
+import "./register.styles.css";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
@@ -85,7 +86,7 @@ export default function Register() {
     }
             
     return (
-        <div>
+        <div className="register-container">
             <h1>Registro</h1>
             <br></br>
             <p>Complete los siguientes datos para el registro</p>
@@ -99,5 +100,5 @@ export default function Register() {
 
             <Button onClick={UserExists} text="Sign Up"></Button>
         </div>
-    ) 
+    );
 }
