@@ -764,3 +764,27 @@ app.post('/findUser', async function(req,res) {
         console.log(error)
     }
 })
+
+app.post('/findUserId', async function(req,res) {
+    try {
+        const respuesta = await realizarQuery(`
+            SELECT id_usuario FROM UsuariosChat WHERE mail = '${req.body.mail}'
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.put('/putOnline', async function(req,res) {
+    try {
+        const respuesta = await realizarQuery(`
+            UPDATE UsuariosChat
+            SET en_linea = ${req.body.en_linea}
+            WHERE id_usuario = ${req.body.id_usuario}
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+    }
+})

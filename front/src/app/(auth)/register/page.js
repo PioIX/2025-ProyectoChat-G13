@@ -81,7 +81,18 @@ export default function Register() {
             .then(response => response.json())
             .then(result => {
                 console.log("Usuario creado");
-                router.replace("./../chat")
+                sessionStorage.setItem("isLoggedIn", "true"); 
+                fetch('http://localhost:4006/findUserId', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mail: user })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            sessionStorage.setItem("userId", data[0].id_usuario); // guardar userId 
+                            console.log("userId guardado en sessionStorage:", data[0].id_usuario);
+                            router.replace("./../chat")
+                        })
         })
         }
     }
