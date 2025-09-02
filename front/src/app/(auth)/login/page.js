@@ -30,16 +30,14 @@ export default function Login() {
       for (let i=0; i < usuarios.length; i++) {
         if (usuarios[i].mail == user) {
           if (usuarios[i].contraseña == password) {
-            entrar = true
+            localStorage.setItem("isLoggedIn", "true"); // guardar login
             console.log("entramos")
             router.replace("./../chat")
         } 
       }
 
     } 
-    if (entrar == false) {
-      console.log("Usuario o Contraseña Incorrectos")
-    }
+    console.log("Usuario o Contraseña Incorrectos")
   }
 
   function savePassword(event) {
@@ -52,13 +50,13 @@ export default function Login() {
 
   return (
     <>
-        <h1>Login</h1>
         <div className="contenedor-login">
+          <h1>Login</h1>
             <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser} name="mail" text="Correo electrónico"/>
             <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword} name="contraseña" text="Contraseña"/>
             <Button text="Sign In" onClick={SignIn}></Button>
-            <h3>¿Es la primera vez que ingresas? ¡Registrate!</h3>
-            <Link href="./register">Registrarse</Link>
+            <h3>¿Es la primera vez que ingresas?</h3>
+            <Link href="./register" className="link-login">Registrarse</Link>
         </div>
     </>
   );

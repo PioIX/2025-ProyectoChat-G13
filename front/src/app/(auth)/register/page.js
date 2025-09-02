@@ -3,6 +3,7 @@
 import "./register.styles.css";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -99,6 +100,7 @@ export default function Register() {
             <Input text="Correo Electronico" placeholder="Escriba su email" className="register-inputs" type="email" onChange={saveMail} required={true}/>
 
             <Button onClick={UserExists} text="Sign Up"></Button>
+            <Link href={"./login"} className="link-register">¿Ya tenes cuenta? Login </Link>
         </div>
     );
 }

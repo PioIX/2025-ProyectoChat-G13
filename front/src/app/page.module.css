@@ -165,3 +165,79 @@ a.secondary {
     filter: invert();
   }
 }
+
+/* Contenedor principal */
+.homecontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  color: #333;  
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  width: 100%;
+  background: #1e293b; /* azul oscuro */
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Títulos */
+.titlehome {
+  margin-top: 40px;
+  font-size: 3rem;
+  color: #1e293b;
+}
+
+.subtitlehome {
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 30px;
+  color: #475569;
+}
+
+/* Sección de entrar */
+.entrarhome {
+  background: white;
+  padding: 20px 40px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  margin: 20px 0;
+  transition: transform 0.3s ease;
+}
+
+.entrarhome:hover {
+  transform: translateY(-5px);
+}
+
+.entrarhome p {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #334155;
+}
+
+/* Footer */
+.footerhome {
+  margin-top: auto;
+  font-size: 14px;
+  color: #64748b;
+  padding: 15px 0;
+}
+
+/* Botón */
+
+
