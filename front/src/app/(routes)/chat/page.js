@@ -56,8 +56,8 @@ export default function Chat() {
                 </div>
                 <div className="historial">
                     {/* aca va chat / historial */}
-                    <div className="message-received">{ /* aca va componente mensaje */} HOLA SOY UN MENSAJE</div>
-                    <div className="message-sent">{ /* aca va componente mensaje */} HOLA SOY UN MENSAJE</div>
+                    <div className="message received">{ /* aca va componente mensaje */} HOLA SOY UN MENSAJE</div>
+                    <div className="message sent">{ /* aca va componente mensaje */} HOLA SOY UN MENSAJE</div>
                 </div>
                 <div className="user-interface">
                     {/* // aca va input de mensajes  */}

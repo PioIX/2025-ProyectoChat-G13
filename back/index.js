@@ -788,3 +788,19 @@ app.put('/putOnline', async function(req,res) {
         console.log(error)
     }
 })
+
+app.post('/bringContacts', async function(req,res) {
+    try {
+
+        const respuesta = await realizarQuery(`
+            Select Chats.foto, nom_grupo, grupo, UsuariosChat.foto_perfil
+            FROM Chats
+            INNER JOIN UsuariosPorChats ON Chats.id_chat = UsuariosPorChats.id_chat
+            INNER JOIN UsuariosChat ON UsuariosPorChats.id_usuario = UsuariosChat.id_usuario
+            WHERE UsuariosChat.id_usuario = ${req.body.id_usuario} 
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+    }
+})
