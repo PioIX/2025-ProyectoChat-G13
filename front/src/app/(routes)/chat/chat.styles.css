@@ -1,0 +1,136 @@
+.screen-device {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    font-family: sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 25%;
+    background-color: #232624;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-header {
+    display: flex;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    gap: 10px;
+}
+
+.sidebar-header input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.sidebar-header .new-chat {
+    margin-left: 8px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.contact-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-left: 20px;
+}
+
+.contact {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.contact:hover {
+    background-color: #e9e9e9;
+}
+
+/* Chat principal */
+.chat-device {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.header-chat {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fafafa;
+    color: black;
+}
+
+.header-chat .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Historial de mensajes */
+.historial {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 60%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.message.received {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+    color: rgb(42, 42, 42);
+}
+
+.message.sent {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Input de mensaje */
+.user-interface {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fafafa;
+}
+
+.user-interface input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.user-interface button {
+    margin-left: 8px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
