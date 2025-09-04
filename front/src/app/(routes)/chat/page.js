@@ -40,9 +40,11 @@ export default function Chat() {
             <div className="sidebar">
                 {/* aca deberia ir el buscar, el nuevo chat, y esas cosas y abajo una lista de todos los contactos (otro div claramente) */}
                 <div className="sidebar-header">
-                    <Input type="text" placeholder="Buscar..." />
-                    <Button className="new-chat" text="+"/>
-                    
+                    <h1 className="title-chats">Chats</h1>
+                    <div className="herramientas-user">
+                        <Input type="text" placeholder="Buscar..." />
+                        <Button className="new-chat" text="+"/>
+                    </div>
                 </div>
                 <Contacto/>
             </div>

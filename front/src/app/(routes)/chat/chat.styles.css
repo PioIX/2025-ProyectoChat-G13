@@ -20,25 +20,60 @@
     padding: 20px;
     border-bottom: 1px solid #ddd;
     gap: 10px;
-}
-
-.sidebar-header input {
-    flex: 1;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-.sidebar-header .new-chat {
-    margin-left: 8px;
+    flex-direction: column;
+    margin-left: 0px;
     padding: 5px 10px;
     border: none;
-    background-color: #007bff;
+    background-color: #004fa3;
     color: white;
     font-size: 18px;
     border-radius: 6px;
     cursor: pointer;
 }
+
+.herramientas-user {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
+    background: none;
+    border: none;
+}
+
+.herramientas-user input[type="text"] {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 10px;
+    font-size: 14px;
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.herramientas-user input[type="text"]:focus {
+    border-color: #aaa;
+}
+
+.herramientas-user button {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.herramientas-user button:hover {
+    border-color: #aaa;
+    background: #f0f0f0;
+}
+
 
 /* Chat principal */
 .chat-device {
@@ -117,4 +152,11 @@
     color: white;
     border-radius: 6px;
     cursor: pointer;
+}
+
+.title-chats {
+    color: white;
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
 }

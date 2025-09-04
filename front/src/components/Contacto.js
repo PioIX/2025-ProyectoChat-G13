@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Imagen from "@/components/Imagen"
 import styles from "./Contacto.module.css"
 
 export default function Contacto() {
@@ -19,17 +20,19 @@ export default function Contacto() {
 
     return (
         <div className={styles.contactList}>
-            <img src="@/front/public/vercel.svg" alt="foto"/>
-            {contactos.map((contacto) => {
-                console.log(contacto.id_chat, contacto.grupo, contacto.nom_grupo);
-                <div key={contacto.id_chat} className={styles.contactItem}>
-                    <img
-                        src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
-                        alt={"Foto de: " + contacto.nom_grupo}
-                        className={styles.contactImg}
-                    />
+            <img src="/vercel.svg" alt="foto"/>
+            {contactos.length != 0 && contactos.map((contacto) => {
+                console.log("ASDA",contacto.id_chat, contacto.grupo, contacto.nom_grupo, contacto.foto)
+                return(
+
+                <div key={contacto.id_chat} className={styles.contactItem} onClick={(e) => console.log(e.currentTarget)}>
+                    <Imagen src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
+                            alt={"Foto de: " + contacto.nom_grupo}
+                            className={styles.contactImg}
+                    />  
                     <span className={styles.contactName}>{contacto.nom_grupo}</span>
                 </div>
+                );
             })}
         </div>
     )
