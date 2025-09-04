@@ -5,6 +5,7 @@ import Input from "@/components/Input"
 import { useRouter } from "next/navigation"
 import { use, useEffect } from "react"
 import  "./chat.styles.css"
+import Contacto from "@/components/Contacto"
 
 export default function Chat() {
 
@@ -43,9 +44,7 @@ export default function Chat() {
                     <Button className="new-chat" text="+"/>
                     
                 </div>
-                <div className="contact-list">
-                    {/* componente contacto */}  aaa soy un contacto (UsuariosxChat id)
-                </div>
+                <Contacto/>
             </div>
             <div className="chat-device">
                 <div className="header-chat">

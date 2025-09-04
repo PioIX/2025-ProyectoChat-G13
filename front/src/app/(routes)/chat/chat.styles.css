@@ -40,22 +40,6 @@
     cursor: pointer;
 }
 
-.contact-list {
-    flex: 1;
-    overflow-y: auto;
-    margin-left: 20px;
-}
-
-.contact {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-}
-
-.contact:hover {
-    background-color: #e9e9e9;
-}
-
 /* Chat principal */
 .chat-device {
     flex: 1;
