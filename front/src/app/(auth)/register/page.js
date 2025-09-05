@@ -85,7 +85,7 @@ export default function Register() {
                 fetch('http://localhost:4006/findUserId', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mail: user })
+                    body: JSON.stringify({ mail: correo })
                     })
                         .then(response => response.json())
                         .then(data => {
@@ -109,6 +109,7 @@ export default function Register() {
             <Input text="Confirmar Contraseña" placeholder="Escriba de vuelta su contraseña" className="register-inputs" type="password" onChange={savePassowrdSecure} required={true}/>
             <Input text="Descripcion Personal" placeholder="Escriba la Descripcion Personal" className="register-inputs" type="text" onChange={saveDescription} required={true}/>
             <Input text="Correo Electronico" placeholder="Escriba su email" className="register-inputs" type="email" onChange={saveMail} required={true}/>
+            {/* <Input text="" placeholder="Escriba su email" className="register-inputs" type="file" onChange={saveMail} required={true}/> */}
 
             <Button onClick={UserExists} text="Sign Up"></Button>
             <Link href={"./login"} className="link-register">¿Ya tenes cuenta? Login </Link>

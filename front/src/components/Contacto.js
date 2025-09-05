@@ -20,19 +20,17 @@ export default function Contacto() {
 
     return (
         <div className={styles.contactList}>
-            <img src="/vercel.svg" alt="foto"/>
             {contactos.length != 0 && contactos.map((contacto) => {
                 console.log("ASDA",contacto.id_chat, contacto.grupo, contacto.nom_grupo, contacto.foto)
                 return(
-
-                <div key={contacto.id_chat} className={styles.contactItem} onClick={(e) => console.log(e.currentTarget)}>
-                    <Imagen src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
+                    <div key={contacto.id_chat} className={styles.contactItem} onClick={(e) => console.log(e.currentTarget)}>
+                        <Imagen src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
                             alt={"Foto de: " + contacto.nom_grupo}
                             className={styles.contactImg}
                     />  
                     <span className={styles.contactName}>{contacto.nom_grupo}</span>
-                </div>
-                );
+                    </div>
+                );  
             })}
         </div>
     )
