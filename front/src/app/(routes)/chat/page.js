@@ -3,13 +3,18 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
 import { useRouter } from "next/navigation"
-import { use, useEffect } from "react"
+import { useState, useEffect } from "react"
 import  "./chat.styles.css"
 import Contacto from "@/components/Contacto"
+import Imagen from "@/components/Imagen"
+import Mensaje from "@/components/Mensaje"
 
 export default function Chat() {
 
     const router = useRouter()
+    const [selectedContact, setSelectedContact] = useState(null)  // 👈 contacto elegido
+    const [messages, setMessages] = useState([]) // 👈 historial de mensajes
+
 
     useEffect(() => {
         const isLoggedIn = sessionStorage.getItem("isLoggedIn");
@@ -35,10 +40,23 @@ export default function Chat() {
         })
     })
 
+
+    function handleSelectContact(contact){
+        setSelectedContact(contact)
+
+        // traer historial de mensajes
+        fetch("http://localhost:4006/getMessages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_chat: contact.id_chat })
+        })
+            .then(res => res.json())
+            .then(data => setMessages(data))
+    }
+
     return (
         <div className="screen-device">
             <div className="sidebar">
-                {/* aca deberia ir el buscar, el nuevo chat, y esas cosas y abajo una lista de todos los contactos (otro div claramente) */}
                 <div className="sidebar-header">
                     <h1 className="title-chats">Chats</h1>
                     <div className="herramientas-user">
@@ -46,25 +64,47 @@ export default function Chat() {
                         <Button className="new-chat" text="+"/>
                     </div>
                 </div>
-                <Contacto/>
+                <Contacto onSelectContact={handleSelectContact}/>
             </div>
             <div className="chat-device">
-                <div className="header-chat">
-                    <div className="avatar">
-                        {/* aca va componente contacto  FOTO*/}
+                {selectedContact ? (
+                    <>
+                        <div className="header-chat">
+                            <div className="avatar">
+                                <Imagen
+                                    src={selectedContact.grupo ? selectedContact.foto : selectedContact.foto_perfil}
+                                    alt={"Foto de: " + (selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre)}
+                                />
+                            </div>
+                            <div className="contact-info">
+                                <span>{selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre}</span>
+                                {/* <span className="online-status">Status online- en desarrollo - </span>  lo oculto porque aun no esta desarrollado al 100%*/}
+                            </div>
+                        </div>
+
+                        {/* HISTORIAL */}
+                        <div className="historial">
+                            {messages.map((msg, i) => (
+                                <Mensaje
+                                    key={i}
+                                    contenido={msg.contenido}
+                                    hora={msg.hora}
+                                    esEnviado={String(msg.id_usuario) === String(sessionStorage.getItem("userId"))}
+                                />
+                            ))}
+                        </div>
+
+                        {/* INTERFAZ DE MENSAJE */}
+                        <div className="user-interface">
+                            <Input type="text" placeholder="Escribe un mensaje..." />
+                            <Button className="send-message" text="Enviar"/>
+                        </div>
+                    </>
+                    ) : (
+                    <div className="no-chat">
+                        <p>Selecciona un contacto para empezar a chatear</p>
                     </div>
-                    {/* COMPONENTE NAME ACA */} NOMBRE
-                </div>
-                <div className="historial">
-                    {/* aca va chat / historial */}
-                    <div className="message received">{ /* aca va componente mensaje */} HOLA SOY UN MENSAJE</div>
-                    <div className="message sent">{ /* aca va componente mensaje */} HOLA SOY UN MENSAJE</div>
-                </div>
-                <div className="user-interface">
-                    {/* // aca va input de mensajes  */}
-                    <Input type="text" placeholder="Escribe un mensaje..." />
-                    <Button className="send-message" text="Enviar Mensaje"/>
-                </div>                
+                )}
             </div>
         </div>
     )

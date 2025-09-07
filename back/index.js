@@ -793,14 +793,32 @@ app.post('/bringContacts', async function(req,res) {
     try {
 
         const respuesta = await realizarQuery(`
-            Select Chats.foto, nom_grupo, grupo, UsuariosChat.foto_perfil, UsuariosPorChats.id_chat
-            FROM Chats+
+            Select Chats.foto, nom_grupo, grupo, UsuariosChat.foto_perfil, UsuariosPorChats.id_chat, UsuariosChat.nombre
+            FROM Chats
             INNER JOIN UsuariosPorChats ON Chats.id_chat = UsuariosPorChats.id_chat
             INNER JOIN UsuariosChat ON UsuariosPorChats.id_usuario = UsuariosChat.id_usuario
-            WHERE UsuariosChat.id_usuario = ${req.body.id_usuario} 
+            WHERE UsuariosPorChats.id_chat IN (
+                SELECT id_chat FROM UsuariosPorChats WHERE id_usuario = ${req.body.id_usuario}
+            ) AND UsuariosChat.id_usuario != ${req.body.id_usuario};
         `)
         res.send(respuesta)
     } catch (error) {
         console.log(error)
+    }
+})
+
+
+app.post('/getMessages', async function(req,res) {
+    try {
+        const respuesta = await realizarQuery(`
+            SELECT id_mensajes, id_usuario, contenido, hora
+            FROM Mensajes
+            WHERE id_chat = ${req.body.id_chat}
+            ORDER BY hora ASC
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Error al traer mensajes")
     }
 })

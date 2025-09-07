@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Imagen from "@/components/Imagen"
 import styles from "./Contacto.module.css"
 
-export default function Contacto() {
+export default function Contacto({ onSelectContact = () => {} }) {
     const [contactos, setContactos] = useState([]);
 
     useEffect(() => {
@@ -14,21 +14,31 @@ export default function Contacto() {
             .then(response => response.json())
             .then(contact => {
                 setContactos(contact)
-                console.log("Contacto guardado en contactos: ", contact);
             })
     }, [])
+
+
+    function handleClick(contacto) {
+        console.log("Contacto clickeado:", contacto)
+        onSelectContact(contacto) 
+    }
 
     return (
         <div className={styles.contactList}>
             {contactos.length != 0 && contactos.map((contacto) => {
-                console.log("ASDA",contacto.id_chat, contacto.grupo, contacto.nom_grupo, contacto.foto)
                 return(
-                    <div key={contacto.id_chat} className={styles.contactItem} onClick={(e) => console.log(e.currentTarget)}>
-                        <Imagen src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
-                            alt={"Foto de: " + contacto.nom_grupo}
-                            className={styles.contactImg}
-                    />  
-                    <span className={styles.contactName}>{contacto.nom_grupo}</span>
+                    <div 
+                        key={contacto.id_chat} 
+                        className={styles.contactItem} 
+                        onClick={() => handleClick(contacto)}>
+                            <Imagen 
+                                src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
+                                alt={"Foto de: " + (contacto.grupo ? contacto.nom_grupo : contacto.nombre)}
+                                className={styles.contactImg}
+                            />  
+                            <span className={styles.contactName}>
+                                {contacto.grupo ? contacto.nom_grupo : contacto.nombre}
+                            </span>
                     </div>
                 );  
             })}
