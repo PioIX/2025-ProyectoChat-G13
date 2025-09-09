@@ -740,7 +740,13 @@ app.get('/usuarios', async function(req,res) {
 })
 
 app.post('/register', async function(req,res) {
+    console.log(req.body)
     try {
+        if (req.body.foto_perfil == null) {
+            req.body.foto_perfil = null
+        } else {
+            req.body.foto_perfil = `'${req.body.foto_perfil}'`
+        }
         const respuesta = await realizarQuery(`
             INSERT INTO UsuariosChat (nombre, apellido, mail, contraseña, desc_personal, foto_perfil, en_linea)    
             VALUES ('${req.body.nombre}', '${req.body.apellido}', '${req.body.mail}', '${req.body.contraseña}', '${req.body.desc_personal}', ${req.body.foto_perfil}, ${req.body.en_linea})

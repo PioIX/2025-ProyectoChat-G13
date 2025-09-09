@@ -101,7 +101,7 @@ export default function Chat() {
                         </div>
                     </>
                     ) : (
-                    <div className="no-chat">
+                    <div className="noChat">
                         <p>Selecciona un contacto para empezar a chatear</p>
                     </div>
                 )}

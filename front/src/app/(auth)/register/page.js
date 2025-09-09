@@ -15,7 +15,7 @@ export default function Register() {
     const [confirmContraseña, setConfirmContraseña] = useState("")
     const [description, SetDescription] = useState("")
     const [correo, SetCorreo] = useState("")
-
+    const [fotoPerfil, SetFotoPerfil] = useState(null)
     const [usuario, setUsuario] = useState([])
 
     const router = useRouter()
@@ -43,6 +43,9 @@ export default function Register() {
     }
     function saveMail(event) {
         SetCorreo(event.target.value)
+    }
+    function saveImage(event) {
+        SetFotoPerfil(event.target.value)
     }
 
     function UserExists() {
@@ -74,7 +77,7 @@ export default function Register() {
                     mail: correo,
                     contraseña: contraseña,
                     desc_personal: description,
-                    foto_perfil: null,
+                    foto_perfil: fotoPerfil,
                     en_linea: false
                 })
             })
@@ -109,10 +112,12 @@ export default function Register() {
             <Input text="Confirmar Contraseña" placeholder="Escriba de vuelta su contraseña" className="register-inputs" type="password" onChange={savePassowrdSecure} required={true}/>
             <Input text="Descripcion Personal" placeholder="Escriba la Descripcion Personal" className="register-inputs" type="text" onChange={saveDescription} required={true}/>
             <Input text="Correo Electronico" placeholder="Escriba su email" className="register-inputs" type="email" onChange={saveMail} required={true}/>
-            {/* <Input text="" placeholder="Escriba su email" className="register-inputs" type="file" onChange={saveMail} required={true}/> */}
+
+            <p>Visite el siguiente link: <a href="https://imgur.com/">https://imgur.com/</a> <br></br> y suba una imagen. Posteriormente Inserte el link de la imagen (OPCIONAL)</p>
+            <Input text="Foto de perfil" placeholder="Agregue su foto de perfil" className="register-inputs" type="text" onChange={saveImage} required={false}/>
 
             <Button onClick={UserExists} text="Sign Up"></Button>
             <Link href={"./login"} className="link-register">¿Ya tenes cuenta? Login </Link>
         </div>
     );
-}
+}   
