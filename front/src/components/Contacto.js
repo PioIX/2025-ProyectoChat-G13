@@ -31,7 +31,7 @@ export default function Contacto({ onSelectContact = () => {} }) {
                         key={contacto.id_chat} 
                         className={styles.contactItem} 
                         onClick={() => handleClick(contacto)}>
-                            <Imagen 
+                            <Imagen
                                 src={contacto.grupo ? contacto.foto : contacto.foto_perfil}
                                 alt={"Foto de: " + (contacto.grupo ? contacto.nom_grupo : contacto.nombre)}
                                 className={styles.contactImg}
