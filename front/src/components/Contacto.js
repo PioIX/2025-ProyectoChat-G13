@@ -14,6 +14,7 @@ export default function Contacto({ onSelectContact = () => {} }) {
             .then(response => response.json())
             .then(contact => {
                 setContactos(contact)
+                console.log(contactos)
             })
     }, [])
 
