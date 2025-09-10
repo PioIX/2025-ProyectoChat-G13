@@ -828,3 +828,18 @@ app.post('/getMessages', async function(req,res) {
         res.status(500).send("Error al traer mensajes")
     }
 })
+
+app.post('/sendMessage', async function(req,res) {
+    try {
+        const respuesta = await realizarQuery(`
+            INSERT INTO Mensajes (id_usuario, id_chat, contenido, hora)
+            VALUES (${req.body.id_usuario}, ${req.body.id_chat}, '${req.body.contenido}', '${req.body.hora}')
+        `)
+        res.send(respuesta)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Error al enviar mensaje")  
+    }
+})
+
+

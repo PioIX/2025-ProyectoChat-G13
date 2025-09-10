@@ -14,7 +14,7 @@ export default function Chat() {
     const router = useRouter()
     const [selectedContact, setSelectedContact] = useState(null)  // 👈 contacto elegido
     const [messages, setMessages] = useState([]) // 👈 historial de mensajes
-
+    const [newMessage,setNewMessage] = useState("")
 
     useEffect(() => {
         const isLoggedIn = sessionStorage.getItem("isLoggedIn");
@@ -40,6 +40,11 @@ export default function Chat() {
         })
     })
 
+    function handleKeyDown(event) {
+        if (event.key === "Enter") {
+            sendNewMessage(); // Llamar a la función para enviar el mensaje
+        }
+    }
 
     function handleSelectContact(contact){
         setSelectedContact(contact)
@@ -54,6 +59,48 @@ export default function Chat() {
             .then(data => setMessages(data))
     }
 
+
+    function handleNewMessageChange(event) {
+        setNewMessage(event.target.value);
+    }
+
+    function sendNewMessage(){
+        if (newMessage.trim() === "" || !selectedContact) return;
+        
+        const now = new Date();
+        // Formatear la fecha y hora manualmente
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // Mes (0-indexado, por eso +1)
+        const day = String(now.getDate()).padStart(2, "0");
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+        const messageData = {
+            id_usuario: sessionStorage.getItem("userId"),
+            id_chat: selectedContact.id_chat,
+            contenido: newMessage,
+            hora: formattedDate
+        };
+
+        setNewMessage(""); // Limpiar el campo de entrada inmediatamente
+
+        // Enviar el mensaje al servidor
+        fetch("http://localhost:4006/sendMessage", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(messageData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Mensaje enviado:", data);
+                // Actualizar el historial de mensajes en la interfaz
+                // setMessages(prevMessages => [...prevMessages, data.info]);
+            })
+    }
+    
     return (
         <div className="screen-device">
             <div className="sidebar">
@@ -72,8 +119,9 @@ export default function Chat() {
                         <div className="header-chat">
                             <div className="avatar">
                                 <Imagen
-                                    src={selectedContact.grupo ? selectedContact.foto : selectedContact.foto_perfil}
+                                    src={selectedContact.grupo == false ? selectedContact.foto : selectedContact.foto_perfil}
                                     alt={"Foto de: " + (selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre)}
+                                    className={styles}
                                 />
                             </div>
                             <div className="contact-info">
@@ -96,8 +144,8 @@ export default function Chat() {
 
                         {/* INTERFAZ DE MENSAJE */}
                         <div className="user-interface">
-                            <Input type="text" placeholder="Escribe un mensaje..." />
-                            <Button className="send-message" text="Enviar"/>
+                            <Input type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown}/>
+                            <Button className="send-message" text="Enviar" onClick={sendNewMessage}/>
                         </div>
                     </>
                     ) : (

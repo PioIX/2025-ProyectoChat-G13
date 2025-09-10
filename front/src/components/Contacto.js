@@ -27,14 +27,17 @@ export default function Contacto({ onSelectContact = () => {} }) {
         <div className={styles.contactList}>
             {contactos.length != 0 && contactos.map((contacto) => {
                 return(
+                    
                     <div 
                         key={contacto.id_chat} 
                         className={styles.contactItem} 
                         onClick={() => handleClick(contacto)}>
 
+                        
+
 
                             <Imagen 
-                                src={contacto.grupo == true ? contacto.foto : contacto.foto_perfil}
+                                src={contacto.grupo == false ? contacto.foto: contacto.foto_perfil}
                                 alt={"Foto de: " + (contacto.grupo ? contacto.nom_grupo : contacto.nombre)}
                                 className={styles.contactImg}
                             />  
