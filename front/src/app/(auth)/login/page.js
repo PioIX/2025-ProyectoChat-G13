@@ -15,9 +15,8 @@ export default function Login() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter()
+
     
-
-
     useEffect(() => {
         fetch("http://localhost:4006/usuarios")
             .then(response => response.json())

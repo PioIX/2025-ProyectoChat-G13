@@ -8,6 +8,7 @@ import  "./chat.styles.css"
 import Contacto from "@/components/Contacto"
 import Imagen from "@/components/Imagen"
 import Mensaje from "@/components/Mensaje"
+import styles from "@/components/Contacto.module.css"
 
 export default function Chat() {
 
@@ -121,10 +122,10 @@ export default function Chat() {
                                 <Imagen
                                     src={selectedContact.grupo == false ? selectedContact.foto : selectedContact.foto_perfil}
                                     alt={"Foto de: " + (selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre)}
-                                    className={styles}
+                                    className={styles.contactImgHeader}
                                 />
                             </div>
-                            <div className="contact-info">
+                            <div className={styles.contactInfo}>
                                 <span>{selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre}</span>
                                 {/* <span className="online-status">Status online- en desarrollo - </span>  lo oculto porque aun no esta desarrollado al 100%*/}
                             </div>
