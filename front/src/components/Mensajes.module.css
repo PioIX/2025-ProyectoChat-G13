@@ -1,6 +1,29 @@
-.span{
+.hour{
+    display: block;
+    text-align: right;   /* alinea a la derecha */
     opacity: 0.7;
-    margin-left: 80%;
     font-size: 0.7rem;
+    margin-top: 2px;     /* espacio con el texto */
 }
 
+.message {
+    max-width: 60%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 14px;       
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    white-space: pre-wrap; 
+}
+
+.messageReceived {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+    color: rgb(42, 42, 42);
+}
+
+.messageSent {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+}

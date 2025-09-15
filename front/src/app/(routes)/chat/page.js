@@ -4,11 +4,11 @@ import Button from "@/components/Button"
 import Input from "@/components/Input"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
-import  "./chat.styles.css"
+import  styles from "@/app/(routes)/chat/chat.module.css"
 import Contacto from "@/components/Contacto"
 import Imagen from "@/components/Imagen"
 import Mensaje from "@/components/Mensaje"
-import styles from "@/components/Contacto.module.css"
+import Popup from "reactjs-popup"
 
 export default function Chat() {
 
@@ -16,6 +16,20 @@ export default function Chat() {
     const [selectedContact, setSelectedContact] = useState(null)  // 👈 contacto elegido
     const [messages, setMessages] = useState([]) // 👈 historial de mensajes
     const [newMessage,setNewMessage] = useState("")
+
+    const [isPopupOpen, setPopupOpen] = useState(false);
+    const [mailInput, setMailInput] = useState("");
+
+    //Abrir el popup
+    const openPopup = () => {
+        setPopupOpen(true)
+    }
+
+    //Cerrar el popup
+    const closePopup = () => {
+        setPopupOpen(false)
+        setMailInput("") //Limpia el input al cerrar el popup
+    }
 
     useEffect(() => {
         const isLoggedIn = sessionStorage.getItem("isLoggedIn");
@@ -101,28 +115,43 @@ export default function Chat() {
                 // setMessages(prevMessages => [...prevMessages, data.info]);
             })
     }
+
+    function newChat(){
+        if(!mailInput.trim()) {
+            alert("Por favor, ingresa un mail")
+            return
+        }
+
+        const datosNewChat = {
+            userId: sessionStorage.getItem("userId"),
+            mail: mailInput.trim() //Se envia el mail al back
+        }
+    }
     
+    function buscarContacto() {
+        console.log("aca el usuario busca un contacto y la lista de selected contactos se actualiza en base a lo que vaya buscando el usuario")
+    }
     return (
-        <div className="screen-device">
-            <div className="sidebar">
-                <div className="sidebar-header">
-                    <h1 className="title-chats">Chats</h1>
-                    <div className="herramientas-user">
-                        <Input type="text" placeholder="Buscar..." />
-                        <Button className="new-chat" text="+"/>
+        <div className={styles.screenDevice}>
+            <div className={styles.sidebar}>
+                <div className={styles.sidebarHeader}>
+                    <h1 className={styles.titleChats}>Chats</h1>
+                    <div className={styles.herramientasUser}>
+                        <Input type="text" placeholder="Buscar..." use="buscarContacto" onChange={buscarContacto}/>
+                        <Button use="nuevoChat" text="Nuevo Chat" onClick={openPopup}/>
                     </div>
                 </div>
                 <Contacto onSelectContact={handleSelectContact}/>
             </div>
-            <div className="chat-device">
+            <div className={styles.chatDevice}>
                 {selectedContact ? (
                     <>
-                        <div className="header-chat">
-                            <div className="avatar">
+                        <div className={styles.headerChat}>
+                            <div className={styles.avatar}>
                                 <Imagen
                                     src={selectedContact.grupo == false ? selectedContact.foto : selectedContact.foto_perfil}
                                     alt={"Foto de: " + (selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre)}
-                                    className={styles.contactImgHeader}
+                                    where="perfil"
                                 />
                             </div>
                             <div className={styles.contactInfo}>
@@ -132,7 +161,7 @@ export default function Chat() {
                         </div>
 
                         {/* HISTORIAL */}
-                        <div className="historial">
+                        <div className={styles.historial}>
                             {messages.map((msg, i) => (
                                 <Mensaje
                                     key={i}
@@ -144,17 +173,42 @@ export default function Chat() {
                         </div>
 
                         {/* INTERFAZ DE MENSAJE */}
-                        <div className="user-interface">
-                            <Input type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown}/>
-                            <Button className="send-message" text="Enviar" onClick={sendNewMessage}/>
+                        <div className={styles.userInterface}>
+                            <Input type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown} use="EscribirMensaje"/>
+                            <Button text="Enviar" onClick={sendNewMessage} use="mandarMensaje"/>
                         </div>
                     </>
                     ) : (
-                    <div className="noChat">
+                    <div className={styles.noChat}>
+                        <h3>Selecciona un chat para comenzar</h3>
                         <p>Selecciona un contacto para empezar a chatear</p>
                     </div>
                 )}
             </div>
+
+            <Popup
+                open={isPopupOpen}
+                onClose={closePopup}
+                modal
+                nested
+                closeOnDocumentClick={false}
+                >
+                    <div className={styles.modal}>
+                        <div className={styles.header}>
+                            <h2>Nuevo Chat</h2>
+                        </div>
+                        <div className={styles.content}>
+                            <p>Ingresa el mail del usuario con quien quieres chatear</p>
+                            <Input type="mail" placeholder="ejemplo@mail.com" value={mailInput} onChange={(e) =>setMailInput(e.target.value)} use="mailNewChat"/>
+                        </div>
+                        <div className={styles.actions}>
+                            <button onClick={closePopup} className={styles.cancelBtn}>Cancelar</button>
+                            <button onClick={newChat} className={styles.createBtn}>Crear chat</button>
+                        </div>
+                    </div>
+            </Popup>
         </div>
+
+        
     )
 }

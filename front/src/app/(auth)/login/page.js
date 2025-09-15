@@ -1,6 +1,6 @@
 "use client"
 
-import "./login.styles.css";
+import styles from "@/app/(auth)/login/login.module.css"
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Link from "next/link";
@@ -64,15 +64,15 @@ export default function Login() {
     }
 
     return (
-        <>
-            <div className="contenedor-login">
+        <div className={styles.contenedorLogin}>
+            <div className={styles.contenedorFormLogin}>
                 <h1>Login</h1>
-                <Input placeholder="Escriba su email" id="email" className="inputs-login" type="email" onChange={saveUser} name="mail" text="Correo electrónico" />
-                <Input placeholder="Escriba su contraseña" id="password" className="inputs-login" type="password" onChange={savePassword} name="contraseña" text="Contraseña" />
-                <Button text="Sign In" onClick={SignIn}></Button>
+                <Input placeholder="Escriba su email" id="email" page="login" type="email" onChange={saveUser} name="mail" text="Correo electrónico" />
+                <Input placeholder="Escriba su contraseña" id="password" page="login" type="password" onChange={savePassword} name="contraseña" text="Contraseña" />
+                <Button text="Sign In" onClick={SignIn} page="login"></Button>
                 <h3>¿Es la primera vez que ingresas?</h3>
-                <Link href="./register" className="link-login">Registrarse</Link>
+                <Link href="./register" className={styles.linkLogin}>Registrarse</Link>
             </div>
-        </>
+        </div>
     );
 }

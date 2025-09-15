@@ -1,6 +1,6 @@
 "use client"
 
-import "./register.styles.css";
+import styles from "@/app/(auth)/register/register.module.css"
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Link from "next/link";
@@ -65,21 +65,24 @@ export default function Register() {
     }
 
     function SignUp() {
+
+        const userData = {
+            nombre: nombre,
+            apellido: apellido,
+            mail: correo,
+            contraseña: contraseña,
+            desc_personal: description,
+            foto_perfil: fotoPerfil,
+            en_linea: false
+        }
+
         if (contraseña === confirmContraseña) {
             fetch("http://localhost:4006/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    apellido: apellido,
-                    mail: correo,
-                    contraseña: contraseña,
-                    desc_personal: description,
-                    foto_perfil: fotoPerfil,
-                    en_linea: false
-                })
+                body: JSON.stringify(userData)
             })
             .then(response => response.json())
             .then(result => {
@@ -101,23 +104,25 @@ export default function Register() {
     }
             
     return (
-        <div className="register-container">
-            <h1>Registro</h1>
-            <br></br>
-            <p>Complete los siguientes datos para el registro</p>
+        <div className={styles.contenedorRegister}>
+            <div className={styles.registerForm}>
+                <h1>Registro</h1>
+                <br></br>
+                <p>Complete los siguientes datos para el registro</p>
 
-            <Input text="Nombre" placeholder="Escriba su nombre" className="register-inputs" type="text" onChange={saveName} required={true}/>
-            <Input text="Apellido" placeholder="Escriba su Apellido" className="register-inputs" type="text" onChange={saveLastName} required={true}/>
-            <Input text="Contraseña" placeholder="Escriba su nombre" className="register-inputs" type="password" onChange={savePassowrd} required={true}/>
-            <Input text="Confirmar Contraseña" placeholder="Escriba de vuelta su contraseña" className="register-inputs" type="password" onChange={savePassowrdSecure} required={true}/>
-            <Input text="Descripcion Personal" placeholder="Escriba la Descripcion Personal" className="register-inputs" type="text" onChange={saveDescription} required={true}/>
-            <Input text="Correo Electronico" placeholder="Escriba su email" className="register-inputs" type="email" onChange={saveMail} required={true}/>
+                <Input text="Nombre" placeholder="Escriba su nombre" page="register" type="text" onChange={saveName} required={true}/>
+                <Input text="Apellido" placeholder="Escriba su Apellido" page="register" type="text" onChange={saveLastName} required={true}/>
+                <Input text="Contraseña" placeholder="Escriba su nombre" page="register" type="password" onChange={savePassowrd} required={true}/>
+                <Input text="Confirmar Contraseña" placeholder="Escriba de vuelta su contraseña" page="register" type="password" onChange={savePassowrdSecure} required={true}/>
+                <Input text="Descripcion Personal" placeholder="Escriba la Descripcion Personal" page="register" type="text" onChange={saveDescription} required={true}/>
+                <Input text="Correo Electronico" placeholder="Escriba su email" page="register" type="email" onChange={saveMail} required={true}/>
 
-            <p>Visite el siguiente link: <a href="https://imgur.com/">https://imgur.com/</a> <br></br> y suba una imagen. Posteriormente Inserte el link de la imagen (OPCIONAL)</p>
-            <Input text="Foto de perfil" placeholder="Agregue su foto de perfil" className="register-inputs" type="text" onChange={saveImage} required={false}/>
+                <Input text="Foto de perfil (enlace público)" placeholder="Agregue su foto de perfil" page="register" type="text" onChange={saveImage} required={false}/>
 
-            <Button onClick={UserExists} text="Sign Up"></Button>
-            <Link href={"./login"} className="link-register">¿Ya tenes cuenta? Login </Link>
+                <Button onClick={UserExists} text="Sign Up" page="register"></Button>
+                <Link href={"./login"} className={styles.linkRegister}>¿Ya tenes cuenta? Login </Link>
+            </div>
         </div>
+        
     );
 }   

@@ -25,7 +25,7 @@ export default function Home() {
       <h2 className={styles.subtitlehome}>Tu mejor lugar para comunicarte</h2>
       <div className={styles.entrarhome}>
         <p className={styles.phome}>Empieza a chatear ya</p>
-        <Button text="ChatSites" onClick={login} className="buttonhome"></Button>
+        <Button text="ChatSites" onClick={login} page="home"></Button>
       </div>
       <p className={styles.footerhome}>Muchas gracias por visitar este sitio</p>
     </div>

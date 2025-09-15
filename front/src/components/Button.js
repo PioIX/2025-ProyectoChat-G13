@@ -8,7 +8,11 @@ export default function Button(props) {
             <button className={
                 clsx(
                     {
-                        [styles.buttonhome] : props.className == "buttonhome", 
+                        [styles.buttonhome] : props.page == "home",
+                        [styles.buttonLogin] : props.page === "login",
+                        [styles.buttonRegister] : props.page === "register",
+                        [styles.buttonNuevoChat] : props.use === "nuevoChat",
+                        [styles.buttonMandarMensaje] : props.use === "mandarMensaje"
                     }
                 )
             } onClick={props.onClick}>{props.text}</button>

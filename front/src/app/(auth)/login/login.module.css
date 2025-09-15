@@ -1,8 +1,8 @@
 /* Fondo con gradiente moderno */
-body {
+.contenedorLogin {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #10b981, #0d9488);
+  background: linear-gradient(135deg, #7076e9, #1305ac);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +10,7 @@ body {
 }
 
 /* Contenedor principal */
-.contenedor-login {
+.contenedorFormLogin {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -22,82 +22,43 @@ body {
 }
 
 /* Título */
-.contenedor-login h1 {
+.contenedorFormLogin h1 {
   font-size: 2rem;
-  color: #065f46;
+  color: #0a1090;
   margin-bottom: 1.8rem;
   font-weight: bold;
   text-align: center;
 }
 
-/* Inputs */
-.inputs-login {
-  width: 100%;
-  padding: 0.9rem 1rem;
-  margin: 0.6rem 0;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
 
-.inputs-login:focus {
-  outline: none;
-  border-color: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-}
-
-/* Botón */
-button {
-  width: 100%;
-  padding: 0.9rem;
-  margin-top: 1rem;
-  background: #059669;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.1s ease;
-}
-
-button:hover {
-  background: #047857;
-}
-
-button:active {
-  transform: scale(0.97);
-}
 
 /* Texto de registro */
-.contenedor-login h3 {
+.contenedorFormLogin h3 {
   margin-top: 1.5rem;
   font-size: 1rem;
   color: #374151;
   margin-bottom: 10px;
 }
 
-.contenedor-login a {
-  color: #059669;
+.contenedorFormLogin a {
+  color: #052967;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.contenedor-login a:hover {
-  color: #047857;
+.contenedorFormLogin a:hover {
+  color: #060478;
   text-decoration: underline;
 }
 
-.link-login{
-  color: #059669;
+.linkLogin{
+  color: #060dce;
   font-weight: 700;
   text-decoration: none;
-
 }
 
-.link-login:hover { text-decoration: underline; }
+.linkLogin:hover { text-decoration: underline; }
 
 /* Animación */
 @keyframes fadeIn {
