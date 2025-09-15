@@ -126,6 +126,27 @@ export default function Chat() {
             userId: sessionStorage.getItem("userId"),
             mail: mailInput.trim() //Se envia el mail al back
         }
+
+        fetch('http://localhost:4006/findUser', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({mail: datosNewChat.mail})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.length === 1) {
+                console.log(data)
+                fetch('http://localhost:4006/newChat', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({grupo: false, id_usuarioAjeno: data[0].id_usuario, id_usuarioPropio: datosNewChat.userId})
+                })
+                .then(res => res.json())
+                .then(vuelto => {
+                    console.log(vuelto)
+                })
+            }
+        })
     }
     
     function buscarContacto() {
@@ -174,7 +195,7 @@ export default function Chat() {
 
                         {/* INTERFAZ DE MENSAJE */}
                         <div className={styles.userInterface}>
-                            <Input type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown} use="EscribirMensaje"/>
+                            <Input type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown} use="EscribirMensaje" />
                             <Button text="Enviar" onClick={sendNewMessage} use="mandarMensaje"/>
                         </div>
                     </>

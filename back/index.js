@@ -134,5 +134,25 @@ app.post('/sendMessage', async function(req,res) {
 })
 
 
+app.post('/newChat', async function(req,res) {
+    const crearChat = await realizarQuery(`
+        INSERT INTO Chats (grupo)   
+        VALUES (${req.body.grupo})
+    `)
+    const BuscarChatRecienCreado = await realizarQuery(`
+        SELECT MAX(id_chat) FROM Chats    
+    `)
+    console.log(BuscarChatRecienCreado, BuscarChatRecienCreado.id_chat, BuscarChatRecienCreado[0].id_chat)
+    const CreacionChatPorUsuarios = await realizarQuery(`
+        INSERT INTO UsuariosPorChats (id_chat, id_usuario)
+        VALUES (${BuscarChatRecienCreado[0].id_chat}, ${req.body.id_usuario})    
+    `)
+    const BuscarUsuariosPorChatRecienCreado = await realizarQuery(`
+        SELECT MAX(id_usuariosporchats) FROM UsuariosPorChats  
+    `)
+    res.send({mensaje: "se pudo crear el chat"})
+
+})
+
 
 
