@@ -32,28 +32,36 @@ export default function Chat() {
     }
 
     useEffect(() => {
-        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-        if (isLoggedIn !== "true") {
-            router.replace("./login")
+        try {
+            const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+            if (isLoggedIn !== "true") {
+                router.replace("./login")
+            }
+        } catch (error) {
+            console.log(error)
         }
     }, [])
 
     useEffect(() => { 
-        fetch("http://localhost:4006/putOnline", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id_usuario: sessionStorage.getItem("userId"),
-                    en_linea: true
+        try {
+            fetch("http://localhost:4006/putOnline", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id_usuario: sessionStorage.getItem("userId"),
+                        en_linea: true
+                    })
                 })
+                .then(response => response.json())
+                .then(result => {
+                    console.log("Se ha puesto en línea");    
             })
-            .then(response => response.json())
-            .then(result => {
-                console.log("Se ha puesto en línea");    
-        })
-    })
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
 
     function handleKeyDown(event) {
         if (event.key === "Enter") {
@@ -64,14 +72,18 @@ export default function Chat() {
     function handleSelectContact(contact){
         setSelectedContact(contact)
 
-        // traer historial de mensajes
-        fetch("http://localhost:4006/getMessages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_chat: contact.id_chat })
-        })
-            .then(res => res.json())
-            .then(data => setMessages(data))
+        try {
+            // traer historial de mensajes
+            fetch("http://localhost:4006/getMessages", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_chat: contact.id_chat })
+            })
+                .then(res => res.json())
+                .then(data => setMessages(data))
+        } catch (error) {
+            console.log(error)   
+        }
     }
 
 
@@ -80,73 +92,94 @@ export default function Chat() {
     }
 
     function sendNewMessage(){
-        if (newMessage.trim() === "" || !selectedContact) return;
-        
-        const now = new Date();
-        // Formatear la fecha y hora manualmente
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, "0"); // Mes (0-indexado, por eso +1)
-        const day = String(now.getDate()).padStart(2, "0");
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const seconds = String(now.getSeconds()).padStart(2, "0");
-        
-        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-        const messageData = {
-            id_usuario: sessionStorage.getItem("userId"),
-            id_chat: selectedContact.id_chat,
-            contenido: newMessage,
-            hora: formattedDate
-        };
-
-        setNewMessage(""); // Limpiar el campo de entrada inmediatamente
-
-        // Enviar el mensaje al servidor
-        fetch("http://localhost:4006/sendMessage", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(messageData)
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Mensaje enviado:", data);
-                // Actualizar el historial de mensajes en la interfaz
-                // setMessages(prevMessages => [...prevMessages, data.info]);
+        try {
+            if (newMessage.trim() === "" || !selectedContact) return;
+            
+            const now = new Date();
+            // Formatear la fecha y hora manualmente
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0"); // Mes (0-indexado, por eso +1)
+            const day = String(now.getDate()).padStart(2, "0");
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            const seconds = String(now.getSeconds()).padStart(2, "0");
+            
+            const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    
+            const messageData = {
+                id_usuario: sessionStorage.getItem("userId"),
+                id_chat: selectedContact.id_chat,
+                contenido: newMessage,
+                hora: formattedDate
+            };
+    
+            setNewMessage(""); // Limpiar el campo de entrada inmediatamente
+    
+            // Enviar el mensaje al servidor
+            fetch("http://localhost:4006/sendMessage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(messageData)
             })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Mensaje enviado:", data);
+                    // Actualizar el historial de mensajes en la interfaz
+                    // setMessages(prevMessages => [...prevMessages, data.info]);
+                })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     function newChat(){
-        if(!mailInput.trim()) {
-            alert("Por favor, ingresa un mail")
-            return
-        }
-
-        const datosNewChat = {
-            userId: sessionStorage.getItem("userId"),
-            mail: mailInput.trim() //Se envia el mail al back
-        }
-
-        fetch('http://localhost:4006/findUser', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({mail: datosNewChat.mail})
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.length === 1) {
-                console.log(data)
-                fetch('http://localhost:4006/newChat', {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({grupo: false, id_usuarioAjeno: data[0].id_usuario, id_usuarioPropio: datosNewChat.userId})
-                })
-                .then(res => res.json())
-                .then(vuelto => {
-                    console.log(vuelto)
-                })
+        const userId = sessionStorage.getItem("userId")
+        console.log(userId)
+        try {
+            // 1. compruebo que el mail sea valido
+            if(!mailInput.trim()) {
+                alert("Por favor, ingresa un mail")
+                return
             }
-        })
+            
+            //2. Creo la constante de los datos del Nuevo Chat
+            const datosNewChat = {
+                mail: mailInput.trim(),
+                nombre: "",
+                id_usuarioAjeno: 0
+            }
+
+            console.log("Datos del nuevo Chat: ", datosNewChat)
+    
+            // 3. Realizo el fetch que busca al usuario con ese mail.
+            fetch('http://localhost:4006/findUser', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({mail: datosNewChat.mail})
+            })
+            .then(res => res.json())
+            .then(dataUser => {
+                console.log("Datos del usuario: ", dataUser)
+                if (dataUser.vector.length === 1) {
+                    console.log("Se ha encontrado al usuario")
+                    datosNewChat.nombre = dataUser.vector[0].nombre
+                    datosNewChat.id_usuarioAjeno = dataUser.vector[0].id_usuario
+                    console.log(datosNewChat.id_usuarioAjeno, userId)
+                    fetch('http://localhost:4006/newChat', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({id_usuarioAjeno: datosNewChat.id_usuarioAjeno, id_usuarioPropio: userId, grupo: false})
+                    })
+                    .then(res => res.json())
+                    .then(chat => {
+                        console.log(chat)
+                        closePopup()
+                    })
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     
     function buscarContacto() {
@@ -170,7 +203,7 @@ export default function Chat() {
                         <div className={styles.headerChat}>
                             <div className={styles.avatar}>
                                 <Imagen
-                                    src={selectedContact.grupo == false ? selectedContact.foto : selectedContact.foto_perfil}
+                                    src={selectedContact.grupo == false ? selectedContact.foto_perfil : selectedContact.foto}
                                     alt={"Foto de: " + (selectedContact.grupo ? selectedContact.nom_grupo : selectedContact.nombre)}
                                     where="perfil"
                                 />

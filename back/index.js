@@ -135,23 +135,49 @@ app.post('/sendMessage', async function(req,res) {
 
 
 app.post('/newChat', async function(req,res) {
-    const crearChat = await realizarQuery(`
-        INSERT INTO Chats (grupo)   
-        VALUES (${req.body.grupo})
-    `)
-    const BuscarChatRecienCreado = await realizarQuery(`
-        SELECT MAX(id_chat) FROM Chats    
-    `)
-    console.log(BuscarChatRecienCreado, BuscarChatRecienCreado.id_chat, BuscarChatRecienCreado[0].id_chat)
-    const CreacionChatPorUsuarios = await realizarQuery(`
-        INSERT INTO UsuariosPorChats (id_chat, id_usuario)
-        VALUES (${BuscarChatRecienCreado[0].id_chat}, ${req.body.id_usuario})    
-    `)
-    const BuscarUsuariosPorChatRecienCreado = await realizarQuery(`
-        SELECT MAX(id_usuariosporchats) FROM UsuariosPorChats  
-    `)
-    res.send({mensaje: "se pudo crear el chat"})
-
+        
+    try {
+    
+    
+        // 1. Buscar si existe un chat con esa persona
+        const existingChat = await realizarQuery(`
+            SELECT uc1.id_chat
+            FROM UsuariosPorChats uc1
+            INNER JOIN UsuariosPorChats uc2 ON uc1.id_chat = uc2.id_chat
+            WHERE uc1.id_usuario = ${req.body.id_usuarioPropio} AND uc2.id_usuario = ${req.body.id_usuarioAjeno};    
+        `)
+    
+        // 2. Verificar si existe
+        if (existingChat.length === 1) {
+            return res.send({ok: false, mensaje: "Ya existe un chat entre ustedes", id_chat: existingChat[0].id_chat})
+        }
+    
+    
+        //3. Crear el chat
+        const crearChat = await realizarQuery(`
+            INSERT INTO Chats (grupo, nom_grupo, descripcion, foto)   
+            VALUES (${req.body.grupo}, "", "", "")
+        `);
+    
+        //4. Buscar nuevo ChatID
+        const NuevoChatId = crearChat.insertId // insertId es un mensaje que devuelve predeterminadamente al realizar una sentencia "INSERT INTO"
+        
+    
+        await realizarQuery(`
+            INSERT INTO UsuariosPorChats (id_chat, id_usuario)
+            VALUES (${NuevoChatId}, ${req.body.id_usuarioPropio})        
+        `);
+    
+        await realizarQuery(`
+            INSERT INTO UsuariosPorChats (id_chat, id_usuario)
+            VALUES (${NuevoChatId}, ${req.body.id_usuarioAjeno})        
+        `);
+    
+        res.send({ok: true, mensaje: "Se ha podido crear el chat y su relacion con éxito.", id_chat: NuevoChatId})
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ok: false, mensaje: "Error al crear el chat"})
+    }
 })
 
 

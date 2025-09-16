@@ -38,7 +38,7 @@ export default function Contacto({ onSelectContact = () => {} }) {
 
 
                             <Imagen 
-                                src={contacto.grupo == false ? contacto.foto: contacto.foto_perfil}
+                                src={contacto.grupo == false ? contacto.foto_perfil: contacto.foto}
                                 alt={"Foto de: " + (contacto.grupo ? contacto.nom_grupo : contacto.nombre)}
                                 where="perfil"
                             />  
