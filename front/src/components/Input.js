@@ -6,6 +6,7 @@ export default function Input(props) {
         <>
             <label htmlFor={props.name}>{props.text}</label>
             <input 
+                value={props.value}
                 placeholder={props.placeholder} 
                 id={props.id} 
                 className={clsx(styles.input, {
@@ -20,7 +21,7 @@ export default function Input(props) {
                 onChange={props.onChange} 
                 required={props.required} 
                 onKeyDown={props.onKeyDown}>
-                
+
                 </input>
         </>
     )

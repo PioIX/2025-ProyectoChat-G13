@@ -19,6 +19,7 @@ export default function Chat() {
 
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [mailInput, setMailInput] = useState("");
+    const [contactos, setContactos] = useState([])
 
     //Abrir el popup
     const openPopup = () => {
@@ -41,6 +42,22 @@ export default function Chat() {
             console.log(error)
         }
     }, [])
+
+
+    useEffect(() => {
+        fetch('http://localhost:4006/bringContacts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_usuario: sessionStorage.getItem("userId") })
+        })
+            .then(response => response.json())
+            .then(contact => {
+                setContactos(contact)
+                console.log(contactos)
+        })
+        
+    }, [])
+
 
     useEffect(() => { 
         try {
@@ -164,7 +181,9 @@ export default function Chat() {
                     console.log("Se ha encontrado al usuario")
                     datosNewChat.nombre = dataUser.vector[0].nombre
                     datosNewChat.id_usuarioAjeno = dataUser.vector[0].id_usuario
+                    console.log("COMPARO", dataUser.vector, contactos[0]) 
                     console.log(datosNewChat.id_usuarioAjeno, userId)
+                    setContactos([...contactos, dataUser.vector[0]])
                     fetch('http://localhost:4006/newChat', {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -174,6 +193,7 @@ export default function Chat() {
                     .then(chat => {
                         console.log(chat)
                         closePopup()
+                        
                     })
                 }
             })
@@ -195,7 +215,7 @@ export default function Chat() {
                         <Button use="nuevoChat" text="Nuevo Chat" onClick={openPopup}/>
                     </div>
                 </div>
-                <Contacto onSelectContact={handleSelectContact}/>
+                <Contacto onSelectContact={handleSelectContact} contactos={contactos}/>
             </div>
             <div className={styles.chatDevice}>
                 {selectedContact ? (
@@ -228,7 +248,7 @@ export default function Chat() {
 
                         {/* INTERFAZ DE MENSAJE */}
                         <div className={styles.userInterface}>
-                            <Input type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown} use="EscribirMensaje" />
+                            <Input value={newMessage} type="text" placeholder="Escribe un mensaje..." onChange={handleNewMessageChange} onKeyDown={handleKeyDown} use="EscribirMensaje" />
                             <Button text="Enviar" onClick={sendNewMessage} use="mandarMensaje"/>
                         </div>
                     </>

@@ -2,21 +2,10 @@ import { useEffect, useState } from "react";
 import Imagen from "@/components/Imagen"
 import styles from "./Contacto.module.css"
 
-export default function Contacto({ onSelectContact = () => {} }) {
-    const [contactos, setContactos] = useState([]);
+export default function Contacto({ onSelectContact = () => {} , contactos}) {
+    // const [contactos, setContactos] = useState([]);
 
-    useEffect(() => {
-        fetch('http://localhost:4006/bringContacts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_usuario: sessionStorage.getItem("userId") })
-        })
-            .then(response => response.json())
-            .then(contact => {
-                setContactos(contact)
-                console.log(contactos)
-            })
-    }, [])
+    
 
 
     function handleClick(contacto) {
@@ -30,7 +19,7 @@ export default function Contacto({ onSelectContact = () => {} }) {
                 return(
                     
                     <div 
-                        key={contacto.id_chat} 
+                        key={contacto.id_chat - 1} 
                         className={styles.contactItem} 
                         onClick={() => handleClick(contacto)}>
 
