@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Imagen from "@/components/Imagen"
 import styles from "./Contacto.module.css"
+import { Socket } from "socket.io-client";
+import { useSocket } from "@/hooks/useSocket";
 
 export default function Contacto({ onSelectContact = () => {} , contactos}) {
     // const [contactos, setContactos] = useState([]);
