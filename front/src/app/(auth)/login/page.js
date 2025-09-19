@@ -63,12 +63,18 @@ export default function Login() {
         setUser(event.target.value)
     }
 
+    function handleKeyDown(event) {
+        if (event.key === "Enter") {
+            SignIn(); // Llamar a la función para enviar el mensaje
+        }
+    }
+
     return (
         <div className={styles.contenedorLogin}>
             <div className={styles.contenedorFormLogin}>
                 <h1>Login</h1>
                 <Input placeholder="Escriba su email" id="email" page="login" type="email" onChange={saveUser} name="mail" text="Correo electrónico" />
-                <Input placeholder="Escriba su contraseña" id="password" page="login" type="password" onChange={savePassword} name="contraseña" text="Contraseña" />
+                <Input placeholder="Escriba su contraseña" id="password" page="login" type="password" onChange={savePassword} name="contraseña" text="Contraseña" onKeyDown={handleKeyDown}/>
                 <Button text="Sign In" onClick={SignIn} page="login"></Button>
                 <h3>¿Es la primera vez que ingresas?</h3>
                 <Link href="./register" className={styles.linkLogin}>Registrarse</Link>

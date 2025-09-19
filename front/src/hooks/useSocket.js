@@ -3,8 +3,8 @@ import io from 'socket.io-client';
 
 const useSocket = (options = { withCredentials: false }, serverUrl = "ws://localhost:4006/") => { //ACÁ PONER LA IP DEL BACK
   const [socket, setSocket] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
-
+  const [isConnected, setIsConnected] = useState(false) 
+  
   useEffect(() => {
     // Crear una conexión con el backend usando Socket.IO
     const socketIo = io(serverUrl, options);

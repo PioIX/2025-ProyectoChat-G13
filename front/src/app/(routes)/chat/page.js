@@ -9,6 +9,8 @@ import Contacto from "@/components/Contacto"
 import Imagen from "@/components/Imagen"
 import Mensaje from "@/components/Mensaje"
 import Popup from "reactjs-popup"
+import { useSocket } from "@/hooks/useSocket"
+
 
 export default function Chat() {
 
@@ -20,6 +22,36 @@ export default function Chat() {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [mailInput, setMailInput] = useState("");
     const [contactos, setContactos] = useState([])
+
+    const { socket, isConnected } = useSocket({withCredentials: true}, "http://localhost:4006") 
+ 
+
+    // ----------------------------
+    // 🔌 Conexión de sockets
+    // ----------------------------
+
+    useEffect(() => {
+        if (!socket) return;
+
+        // Recibir mensajes en tiempo real
+        socket.on("newMessage", (data) => {
+            setMessages((prev) => [...prev, {
+                id_usuario: data.message.id_usuario || "otro",
+                contenido: data.message,
+                hora: new Date().toLocaleTimeString()
+            }]);
+        });
+
+        // Ping de prueba
+        socket.on("pingAll", (data) => {
+            console.log("📢 Ping recibido:", data);
+        });
+
+        return () => {
+            socket.off("newMessage");
+            socket.off("pingAll");
+        }
+    }, [socket]);
 
     //Abrir el popup
     const openPopup = () => {
@@ -98,9 +130,14 @@ export default function Chat() {
             })
                 .then(res => res.json())
                 .then(data => setMessages(data))
+
+                if (socket) {
+                    socket.emit("joinRoom", {room: contact.id_chat})
+                }
         } catch (error) {
             console.log(error)   
         }
+
     }
 
 
@@ -144,6 +181,9 @@ export default function Chat() {
                     // Actualizar el historial de mensajes en la interfaz
                     // setMessages(prevMessages => [...prevMessages, data.info]);
                 })
+            if (socket) {
+                socket.emit("sendMessage", newMessage);
+            }
         } catch (error) {
             console.log(error)
         }
