@@ -22,6 +22,7 @@ export default function Chat() {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [mailInput, setMailInput] = useState("");
     const [contactos, setContactos] = useState([])
+    const [busqueda, setBusqueda] = useState("")
 
     const { socket, isConnected } = useSocket({withCredentials: true}, "http://localhost:4006") 
  
@@ -35,10 +36,11 @@ export default function Chat() {
 
         // Recibir mensajes en tiempo real
         socket.on("newMessage", (data) => {
+            console.log(data)
             setMessages((prev) => [...prev, {
                 id_usuario: data.message.id_usuario || "otro",
-                contenido: data.message,
-                hora: new Date().toLocaleTimeString()
+                contenido: data.message.contenido,
+                hora: data.message.hora
             }]);
         });
 
@@ -182,7 +184,7 @@ export default function Chat() {
                     // setMessages(prevMessages => [...prevMessages, data.info]);
                 })
             if (socket) {
-                socket.emit("sendMessage", newMessage);
+                socket.emit("sendMessage", messageData);
             }
         } catch (error) {
             console.log(error)
@@ -242,16 +244,14 @@ export default function Chat() {
         }
     }
     
-    function buscarContacto() {
-        console.log("aca el usuario busca un contacto y la lista de selected contactos se actualiza en base a lo que vaya buscando el usuario")
-    }
+   
     return (
         <div className={styles.screenDevice}>
             <div className={styles.sidebar}>
                 <div className={styles.sidebarHeader}>
                     <h1 className={styles.titleChats}>Chats</h1>
                     <div className={styles.herramientasUser}>
-                        <Input type="text" placeholder="Buscar..." use="buscarContacto" onChange={buscarContacto}/>
+                        <Input type="text" placeholder="Buscar..." use="buscarContacto" onChange={(e) => {setBusqueda(e.target.value)}}/>
                         <Button use="nuevoChat" text="Nuevo Chat" onClick={openPopup}/>
                     </div>
                 </div>
