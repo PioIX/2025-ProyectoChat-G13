@@ -62,8 +62,9 @@
 }
 
 .inputEscribirMensaje {
-    flex: 1;
-    padding: 8px;
+    flex: auto;
+    padding: 16px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 6px;
     word-wrap: break-word; 

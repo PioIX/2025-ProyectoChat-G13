@@ -136,6 +136,18 @@ app.post('/bringContacts', async function (req, res) {
                 SELECT id_chat FROM UsuariosPorChats WHERE id_usuario = ${req.body.id_usuario}
             ) AND UsuariosChat.id_usuario != ${req.body.id_usuario};
         `)
+
+        for (let i=0; i<respuesta.length; i++) {
+            if (respuesta[i].foto_perfil == null || respuesta[i].foto_perfil == "") {
+                respuesta[i].foto_perfil = "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+            }
+            if (respuesta[i].foto == null || respuesta[i].foto == "") {
+                respuesta[i].foto = "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+            }
+        }
+
+
+
         res.send(respuesta)
     } catch (error) {
         console.log(error)

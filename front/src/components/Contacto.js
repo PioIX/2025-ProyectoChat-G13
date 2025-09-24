@@ -6,9 +6,8 @@ import { useSocket } from "@/hooks/useSocket";
 
 export default function Contacto({ onSelectContact = () => {} , contactos}) {
     // const [contactos, setContactos] = useState([]);
-
     
-
+    
 
     function handleClick(contacto) {
         console.log("Contacto clickeado:", contacto)

@@ -85,9 +85,10 @@ export default function Chat() {
             body: JSON.stringify({ id_usuario: sessionStorage.getItem("userId") })
         })
             .then(response => response.json())
-            .then(contact => {
-                setContactos(contact)
-                console.log(contactos)
+            .then(data => {
+                
+                setContactos(data)
+                console.log(data)
         })
         
     }, [])
@@ -121,6 +122,8 @@ export default function Chat() {
     }
 
     function handleSelectContact(contact){
+        
+        
         setSelectedContact(contact)
 
         try {
