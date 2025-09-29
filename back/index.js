@@ -80,7 +80,7 @@ app.post('/register', async function (req, res) {
             INSERT INTO UsuariosChat (nombre, apellido, mail, contraseña, desc_personal, foto_perfil, en_linea)    
             VALUES ('${req.body.nombre}', '${req.body.apellido}', '${req.body.mail}', '${req.body.contraseña}', '${req.body.desc_personal}', ${req.body.foto_perfil}, ${req.body.en_linea})
         `)
-        res.send(respuesta)
+        res.send({res: true, message: "Usuario Creado Correctamente"})
     } catch (error) {
         console.log(error)
     }
@@ -146,7 +146,7 @@ app.post('/bringContacts', async function (req, res) {
             }
         }
 
-
+        
 
         res.send(respuesta)
     } catch (error) {

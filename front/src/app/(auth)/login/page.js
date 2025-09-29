@@ -11,6 +11,15 @@ import { use, useEffect, useState } from "react";
 
 export default function Login() {
     
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
+    const [textoMensaje, setTextoMensaje] = useState("");
+
+    const showModal = (title, message) => {
+    setTextoMensaje(`${title}: ${message}`);
+    setMostrarMensaje(true);
+    setTimeout(() => setMostrarMensaje(false), 3000); 
+    };
+
     const [usuarios, setUsuarios] = useState([])
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
@@ -29,10 +38,17 @@ export default function Login() {
 
     function SignIn() {
         try {
+
+            if (!user || !password) {
+                showModal("Error", "Debes completar todos los campos")
+                return
+            }
+
             for (let i = 0; i < usuarios.length; i++) {
                 if (usuarios[i].mail == user) {
                     if (usuarios[i].contraseña == password) {
                         sessionStorage.setItem("isLoggedIn", "true"); // guardar login
+                        showModal("Has iniciado Sesión", "Enseguida estarás en la app")
                         fetch('http://localhost:4006/findUserId', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -44,11 +60,10 @@ export default function Login() {
                                 console.log("userId guardado en sessionStorage:", data[0].id_usuario);
                                 router.replace("./../chat")
                             })
+                    } else {
+                        showModal("Error", "Contraseña o Usuario Incorrecto")
                     }
                 }
-            }
-            if (sessionStorage.getItem("isLoggedIn") !== "true") {
-                console.log("Contraseña o usuario incorrecto")
             }
         } catch (error) {
             console.log(error)
@@ -79,6 +94,11 @@ export default function Login() {
                 <h3>¿Es la primera vez que ingresas?</h3>
                 <Link href="./register" className={styles.linkLogin}>Registrarse</Link>
             </div>
+            {mostrarMensaje && (
+            <div className={styles.mensaje}>
+                {textoMensaje}
+            </div>
+        )}
         </div>
     );
 }

@@ -86,7 +86,6 @@ export default function Chat() {
         })
             .then(response => response.json())
             .then(data => {
-                
                 setContactos(data)
                 console.log(data)
         })

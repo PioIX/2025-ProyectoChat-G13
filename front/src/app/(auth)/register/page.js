@@ -19,12 +19,27 @@ export default function Register() {
     const [usuario, setUsuario] = useState([])
 
     const router = useRouter()
+
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
+    const [textoMensaje, setTextoMensaje] = useState("");
+
+    const showModal = (title, message) => {
+    setTextoMensaje(`${title}: ${message}`);
+    setMostrarMensaje(true);
+    setTimeout(() => setMostrarMensaje(false), 3000); 
+    };
+
+
+
     
     useEffect(() => {
         if (usuario.existe == false) {
             SignUp()
+        } else if (usuario.existe == true) {
+            showModal("Error", "Ya existe un usuario con ese mail")
         }
     }, [usuario])
+
 
     function saveName(event) {
         SetNombre(event.target.value)
@@ -49,6 +64,12 @@ export default function Register() {
     }
 
     function UserExists() {
+
+            if (!nombre || !apellido || !correo || !contraseña || !description) {
+                showModal("Error", "Complete todos los campos por favor")
+                return
+            }
+
             fetch("http://localhost:4006/findUser", {
                 method: "POST",
                 headers: {
@@ -64,7 +85,7 @@ export default function Register() {
             })
     }
 
-    function SignUp() {
+    function SignUp() { 
 
         const userData = {
             nombre: nombre,
@@ -86,7 +107,7 @@ export default function Register() {
             })
             .then(response => response.json())
             .then(result => {
-                console.log("Usuario creado");
+                showModal("Exito", "Usuario creado correctamente")
                 sessionStorage.setItem("isLoggedIn", "true"); 
                 fetch('http://localhost:4006/findUserId', {
                     method: 'POST',
@@ -100,6 +121,8 @@ export default function Register() {
                             router.replace("./../chat")
                         })
         })
+        } else {
+            showModal("Error", "Las contraseñas no coinciden")
         }
     }
             
@@ -122,6 +145,13 @@ export default function Register() {
                 <Button onClick={UserExists} text="Sign Up" page="register"></Button>
                 <Link href={"./login"} className={styles.linkRegister}>¿Ya tenes cuenta? Login </Link>
             </div>
+
+            {mostrarMensaje && (
+            <div className={styles.mensaje}>
+                {textoMensaje}
+            </div>)}
+
+
         </div>
         
     );
