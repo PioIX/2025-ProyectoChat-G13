@@ -14,10 +14,10 @@ export default function Contacto({ onSelectContact = () => {} , contactos}) {
         onSelectContact(contacto) 
     }
 
+
     return (
         <div className={styles.contactList}>
-            {contactos.length != 0 && contactos.map((contacto) => {
-                return(
+            {contactos.length != 0 && contactos.map((contacto) => (
                     
                     <div 
                         key={contacto.id_chat - 1} 
@@ -36,8 +36,8 @@ export default function Contacto({ onSelectContact = () => {} , contactos}) {
                                 {contacto.grupo ? contacto.nom_grupo : contacto.nombre}
                             </span>
                     </div>
-                );  
-            })}
+                
+            ))}
         </div>
     )
 } 

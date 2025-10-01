@@ -23,6 +23,7 @@ export default function Chat() {
     const [mailInput, setMailInput] = useState("");
     const [contactos, setContactos] = useState([])
     const [busqueda, setBusqueda] = useState("")
+    const [contactosFiltrados, setContactosFiltrados] = useState([]);
 
     const { socket, isConnected } = useSocket({withCredentials: true}, "http://localhost:4006") 
  
@@ -86,11 +87,31 @@ export default function Chat() {
         })
             .then(response => response.json())
             .then(data => {
-                setContactos(data)
                 console.log(data)
+                for (let i = 0; i < data.length; i++) {
+                    for (let j = 0; j < data.length; j++) {
+                        if (i != j && data[i].grupo == 1 && data[i].nom_grupo == data[j].nom_grupo) {
+                            data.splice(j,1)
+                        }
+                    }
+                }
+                console.log("Filtrado: ", data)
+                setContactos(data)
         })
         
     }, [])
+
+
+    useEffect(()=>{
+        if (busqueda == "") {
+            setContactosFiltrados(contactos)
+        } else {
+            let auxiliar = contactos.filter((contacto) => (contacto.grupo ? contacto.nom_grupo : contacto.nombre).includes(busqueda))
+            console.log(auxiliar)
+            setContactosFiltrados(auxiliar)
+        }
+        console.log("Busqueda: ", busqueda, " Contactos ", contactos, " Filtrados: ", contactosFiltrados)
+    }, [busqueda])
 
 
     useEffect(() => { 
@@ -182,8 +203,6 @@ export default function Chat() {
                 .then(res => res.json())
                 .then(data => {
                     console.log("Mensaje enviado:", data);
-                    // Actualizar el historial de mensajes en la interfaz
-                    // setMessages(prevMessages => [...prevMessages, data.info]);
                 })
             if (socket) {
                 socket.emit("sendMessage", messageData);
@@ -257,7 +276,7 @@ export default function Chat() {
                         <Button use="nuevoChat" text="Nuevo Chat" onClick={openPopup}/>
                     </div>
                 </div>
-                <Contacto onSelectContact={handleSelectContact} contactos={contactos}/>
+                <Contacto onSelectContact={handleSelectContact} contactos={contactos} busqueda={busqueda}/>
             </div>
             <div className={styles.chatDevice}>
                 {selectedContact ? (
