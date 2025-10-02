@@ -13,7 +13,10 @@
     font-size: 14px;       
     word-wrap: break-word; 
     overflow-wrap: break-word; 
-    white-space: pre-wrap; 
+    white-space: pre-wrap;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideInMessage 0.3s ease-out forwards;
 }
 
 .messageReceived {
@@ -26,4 +29,12 @@
     background-color: #007bff;
     color: white;
     align-self: flex-end;
+}
+
+
+@keyframes slideInMessage {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

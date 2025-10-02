@@ -18,7 +18,7 @@ export default function Chat() {
     const [selectedContact, setSelectedContact] = useState(null)  // 👈 contacto elegido
     const [messages, setMessages] = useState([]) // 👈 historial de mensajes
     const [newMessage,setNewMessage] = useState("")
-
+    const [isGroup, setIsGroup] = useState(false)
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [mailInput, setMailInput] = useState("");
     const [contactos, setContactos] = useState([])
@@ -102,16 +102,20 @@ export default function Chat() {
     }, [])
 
 
-    useEffect(()=>{
-        if (busqueda == "") {
-            setContactosFiltrados(contactos)
-        } else {
-            let auxiliar = contactos.filter((contacto) => (contacto.grupo ? contacto.nom_grupo : contacto.nombre).includes(busqueda))
-            console.log(auxiliar)
-            setContactosFiltrados(auxiliar)
-        }
-        console.log("Busqueda: ", busqueda, " Contactos ", contactos, " Filtrados: ", contactosFiltrados)
-    }, [busqueda])
+    useEffect(() => {
+    if (!busqueda) {
+        // Si no hay búsqueda, mostramos todos
+        setContactosFiltrados(contactos);
+    } else {
+        // Filtrar por nombre o grupo (insensible a mayúsculas/minúsculas)
+        const auxiliar = contactos.filter((contacto) =>
+            (contacto.grupo ? contacto.nom_grupo : contacto.nombre)
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+        );
+        setContactosFiltrados(auxiliar);
+    }
+}, [busqueda, contactos]);
 
 
     useEffect(() => { 
@@ -276,7 +280,7 @@ export default function Chat() {
                         <Button use="nuevoChat" text="Nuevo Chat" onClick={openPopup}/>
                     </div>
                 </div>
-                <Contacto onSelectContact={handleSelectContact} contactos={contactos} busqueda={busqueda}/>
+                <Contacto onSelectContact={handleSelectContact} contactos={contactosFiltrados} selectedContact={selectedContact}/>
             </div>
             <div className={styles.chatDevice}>
                 {selectedContact ? (

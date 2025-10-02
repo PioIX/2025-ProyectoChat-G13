@@ -4,7 +4,7 @@ import styles from "./Contacto.module.css"
 import { Socket } from "socket.io-client";
 import { useSocket } from "@/hooks/useSocket";
 
-export default function Contacto({ onSelectContact = () => {} , contactos}) {
+export default function Contacto({ onSelectContact = () => {} , contactos, selectedContact}) {
     // const [contactos, setContactos] = useState([]);
     
     
@@ -21,7 +21,7 @@ export default function Contacto({ onSelectContact = () => {} , contactos}) {
                     
                     <div 
                         key={contacto.id_chat - 1} 
-                        className={styles.contactItem} 
+                        className={`${styles.contactItem} ${selectedContact?.id_chat === contacto.id_chat ? styles.selected : ""}`} 
                         onClick={() => handleClick(contacto)}>
 
                         
